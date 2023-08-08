@@ -357,6 +357,7 @@ public:
        void measure() {
          //measurement here:
          cs[0].current = ads1.getCurrent_0_1(dev.channel(1).sampleTime(), dev.channel(1).sctFactor());cs[0].ok = ads1.checkSensor();
+		 //cs[0].current = ads1.getCurrent_gnd(0, dev.channel(1).sampleTime(), dev.channel(1).sctFactor());cs[0].ok = ads1.checkSensor();	// Messung gegen Gnd
          //cs[1].current = ads1.getCurrent_2_3(dev.channel(2).sampleTime(), dev.channel(2).sctFactor());cs[1].ok = ads1.checkSensor();
          //cs[2].current = ads2.getCurrent_0_1(dev.channel(3).sampleTime(), dev.channel(3).sctFactor());cs[2].ok = ads2.checkSensor();
 
