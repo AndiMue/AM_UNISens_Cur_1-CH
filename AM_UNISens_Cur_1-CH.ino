@@ -53,8 +53,8 @@ typedef struct {
 
 // define all device properties
 const struct DeviceInfo PROGMEM devinfo = {
-  {0xF3, 0x4E, 0x01},          // Device ID
-  "JPCUR00001",                // Device Serial
+  {0xF3, 0x4E, 0x03},          // Device ID
+  "AMCUR_CHN1",                // Device Serial
   {0xF3, 0x4E},                // Device Model
   0x10,                        // Firmware Version
   0x53,                        // Device Type
@@ -188,7 +188,8 @@ public:
       if (first) {							// Beim ersten Mal
         first = false;						
        lcd.setCursor(0, 0);
-       lcd.print(" L1    L2    L3 ");		// erste Zeile im Display
+       //lcd.print(" L1    L2    L3 ");		// erste Zeile im Display
+       lcd.print(" L1             ");                   // erste Zeile im Display
       }
      lcd.setCursor(0, 1);					// zweite Zeile im Display
      lcd.print("                ");			// zweite Zeile im Display leeren
@@ -196,10 +197,10 @@ public:
      lcd.setCursor(cs[0].current > 999 ? 0 : 1, 1);	// setze Cursor wenn Strom > 999 auf 0, sonst auf 1, 1  (Spalte, Zeile)
      lcd.print(cs[0].current / 100.0, 1);			// schreibe Strom geteilt durch 100; 1 Nachkommastelle (?)
 
-     //lcd.setCursor(cs[1].current > 999 ? 6 : 7, 1);
+     lcd.setCursor(cs[1].current > 999 ? 6 : 7, 1);
      //lcd.print(cs[1].current / 100.0, 1);
 
-     //lcd.setCursor(cs[2].current > 999 ? 12 : 13, 1);
+     lcd.setCursor(cs[2].current > 999 ? 12 : 13, 1);
      //lcd.print(cs[2].current / 100.0, 1);
     }
   }
@@ -509,20 +510,17 @@ void loop() {
 auskommentiert: 
 Zeilen
 30		//#define ADS1115_ADDR_2 0x4A	// auskommentiert
-199  lcd.setCursor(cs[1].current > 999 ? 6 : 7, 1);
-200  lcd.print(cs[1].current / 100.0, 1);
-202  lcd.setCursor(cs[2].current > 999 ? 12 : 13, 1);
-203  lcd.print(cs[2].current / 100.0, 1);
+191 geändert Anzeige erste Zeile im Display nur L1, anstatt L1, L2 und L3
 349		//Sens_Ads1x15<ADS1115_ADDR_2> ads2;
 359		//cs[1].current = ads1.getCurrent_2_3(dev.channel(2).sampleTime(), dev.channel(2).sctFactor());cs[1].ok = ads1.checkSensor();
 360 	//cs[2].current = ads2.getCurrent_0_1(dev.channel(3).sampleTime(), dev.channel(3).sctFactor());cs[2].ok = ads2.checkSensor();
 369	 	//ads2.init(ADS_SENSOR_GAIN);
 379  cumulatedCurrentValues[1] += cs[1].current;
 380  cumulatedCurrentValues[2] += cs[2].current;
-
-
-noch auskommentieren?
-
+199  lcd.setCursor(cs[1].current > 999 ? 6 : 7, 1);
+200  lcd.print(cs[1].current / 100.0, 1);
+202  lcd.setCursor(cs[2].current > 999 ? 12 : 13, 1);
+203  lcd.print(cs[2].current / 100.0, 1);
 
 
 */
