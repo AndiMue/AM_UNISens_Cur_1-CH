@@ -107,7 +107,7 @@ public:
       while (millis() - ms < sampleTimeMS)
       {
         //voltage = rawToVolt(adc_0_1 ? ads.readADC_Differential_0_1():ads.readADC_Differential_2_3());
-		voltage = rawToVolt(readADC_Differential_gnd(chnl));	// adc_0_1 ? ads.readADC_Differential_0_1():ads.readADC_Differential_2_3());
+		voltage = rawToVolt(readADC_SingleEnded(chnl));	// adc_0_1 ? ads.readADC_Differential_0_1():ads.readADC_Differential_2_3());
         current = voltage * factor;
         current /= 10.0;
 
@@ -122,8 +122,8 @@ public:
   }
   
   
-  uint32_t getCurrent_0_gnd(uint8_t chnl, uint16_t sampleTimeMS, uint8_t factor) {
-     return getCurrent_Gnd(0, true,sampleTimeMS, factor);
+  uint32_t getCurrent_gnd(uint8_t chnl, uint16_t sampleTimeMS, uint8_t factor) {
+     return getCurrent_Gnd(chnl, true,sampleTimeMS, factor);
   }
   
   uint32_t getCurrent_0_1(uint16_t sampleTimeMS, uint8_t factor) {
