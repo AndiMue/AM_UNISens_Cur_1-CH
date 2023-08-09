@@ -137,43 +137,6 @@ int16_t Adafruit_ADS1X15::readADC_SingleEnded(uint8_t channel) {
     @return the ADC reading
 */
 /**************************************************************************/
-//int16_t Adafruit_ADS1X15::readADC_Differential_gnd(uint8_t chnl) {		// -->>> mit channel aufrufen
-//  if(chnl > 3){chnl = 0;}
-//  startADC_SingleEnded(chnl);
-  
-  // switch (chnl){
-  //	case 0:
-  //		startADC_SingleEnded(ADS1X15_REG_CONFIG_MUX_SINGLE_0);//, /*continuous=*/false);	// startADC_SingleEnded anstatt startADCReading
-//		break;
-//	case 1:
-//		startADC_SingleEnded(ADS1X15_REG_CONFIG_MUX_SINGLE_1, /*continuous=*/false);	// startADC_SingleEnded anstatt startADCReading
-//		break;
-//	case 2:
-//		startADC_SingleEnded(ADS1X15_REG_CONFIG_MUX_SINGLE_2, /*continuous=*/false);	// startADC_SingleEnded anstatt startADCReading
-//		break;
-//	case 3:
-//		startADC_SingleEnded(ADS1X15_REG_CONFIG_MUX_SINGLE_3, /*continuous=*/false);	// startADC_SingleEnded anstatt startADCReading
-//		break;
-// } */
-  
-  // Wait for the conversion to complete
-//  while (!conversionComplete())
-    ;
-
-  // Read the conversion results
-//  return getLastConversionResults();
-//}
-
-/**************************************************************************/
-/*!
-    @brief  Reads the conversion results, measuring the voltage
-            difference between the P (AIN0) and N (AIN1) input.  Generates
-            a signed value since the difference can be either
-            positive or negative.
-
-    @return the ADC reading
-*/
-/**************************************************************************/
 int16_t Adafruit_ADS1X15::readADC_Differential_0_1() {
   startADCReading(ADS1X15_REG_CONFIG_MUX_DIFF_0_1, /*continuous=*/false);
 
