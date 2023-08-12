@@ -11,7 +11,7 @@
 #define SENSORS_ADS1X15_AM_H_
 
 #include <Wire.h>
-#include <Adafruit_ADS1X15.h>
+#include <Adafruit_ADS1X15_AM.h>
 
   // ads.setGain(GAIN_TWOTHIRDS);  +/- 6.144V  1 bit = 0.1875mV (default)
   // ads.setGain(GAIN_ONE);        +/- 4.096V  1 bit = 0.125mV
@@ -107,7 +107,7 @@ public:
       while (millis() - ms < sampleTimeMS)
       {
         //voltage = rawToVolt(adc_0_1 ? ads.readADC_Differential_0_1():ads.readADC_Differential_2_3());
-		voltage = rawToVolt(readADC_SingleEnded(chnl));	// adc_0_1 ? ads.readADC_Differential_0_1():ads.readADC_Differential_2_3());
+		voltage = rawToVolt(ads.readADC_SingleEnded(chnl));	// adc_0_1 ? ads.readADC_Differential_0_1():ads.readADC_Differential_2_3());
         current = voltage * factor;
         current /= 10.0;
 
