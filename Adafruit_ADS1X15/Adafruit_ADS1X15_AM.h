@@ -158,7 +158,7 @@ public:
   int16_t readADC_Differential_0_3();
   int16_t readADC_Differential_1_3();
   int16_t readADC_Differential_2_3();
-//  int16_t readADC_Differential_gnd(uint8_t chnl);		// messe  gegen Gnd
+
   void startComparator_SingleEnded(uint8_t channel, int16_t threshold);
   int16_t getLastConversionResults();
   float computeVolts(int16_t counts);

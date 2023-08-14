@@ -328,36 +328,36 @@ float Adafruit_ADS1X15::computeVolts(int16_t counts) {
 void Adafruit_ADS1X15::startADCReading(uint16_t mux, bool continuous) {
   // Start with default values
   uint16_t config =
-      ADS1X15_REG_CONFIG_CQUE_1CONV |   // Set CQUE to any value other than
+      ADS1X15_REG_CONFIG_CQUE_1CONV |   // 0x0000 Set CQUE to any value other than
                                         // None so we can use it in RDY mode
-      ADS1X15_REG_CONFIG_CLAT_NONLAT |  // Non-latching (default val)
-      ADS1X15_REG_CONFIG_CPOL_ACTVLOW | // Alert/Rdy active low   (default val)
-      ADS1X15_REG_CONFIG_CMODE_TRAD;    // Traditional comparator (default val)
+      ADS1X15_REG_CONFIG_CLAT_NONLAT |  // 0x0000 Non-latching (default val)
+      ADS1X15_REG_CONFIG_CPOL_ACTVLOW | // 0x0000 Alert/Rdy active low   (default val)
+      ADS1X15_REG_CONFIG_CMODE_TRAD;    // 0x0000 Traditional comparator (default val)
 
   if (continuous) {
-    config |= ADS1X15_REG_CONFIG_MODE_CONTIN;
+    config |= ADS1X15_REG_CONFIG_MODE_CONTIN;	// 0x0000
   } else {
-    config |= ADS1X15_REG_CONFIG_MODE_SINGLE;
+    config |= ADS1X15_REG_CONFIG_MODE_SINGLE;	// 0x0100
   }
 
   // Set PGA/voltage range
-  config |= m_gain;
+  config |= m_gain;	// 0x0000
 
   // Set data rate
-  config |= m_dataRate;
+  config |= m_dataRate; // 0x0080
 
   // Set channels
-  config |= mux;
+  config |= mux; // 0x4000, bei 0 gegen Gnd
 
   // Set 'start single-conversion' bit
-  config |= ADS1X15_REG_CONFIG_OS_SINGLE;
+  config |= ADS1X15_REG_CONFIG_OS_SINGLE;	// 0x8000
 
   // Write config register to the ADC
-  writeRegister(ADS1X15_REG_POINTER_CONFIG, config);
+  writeRegister(ADS1X15_REG_POINTER_CONFIG, config); // 0x01, 0xC180
 
   // Set ALERT/RDY to RDY mode.
-  writeRegister(ADS1X15_REG_POINTER_HITHRESH, 0x8000);
-  writeRegister(ADS1X15_REG_POINTER_LOWTHRESH, 0x0000);
+  writeRegister(ADS1X15_REG_POINTER_HITHRESH, 0x8000);	// 0x03, 0x8000
+  writeRegister(ADS1X15_REG_POINTER_LOWTHRESH, 0x0000); // 0x02, 0x0000
 }
 
 /**************************************************************************/

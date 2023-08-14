@@ -97,7 +97,7 @@ public:
     }
   }
 
-  uint32_t getCurrent_Gnd(uint8_t chnl, bool adc_0_1, uint16_t sampleTimeMS, uint8_t factor) {
+  uint32_t getCurrent_Gnd(uint16_t chnl, uint16_t sampleTimeMS, uint8_t factor) {
     if (present) {
       long ms = millis();
       int32_t voltage = 0;
@@ -122,8 +122,8 @@ public:
   }
   
   
-  uint32_t getCurrent_gnd(uint8_t chnl, uint16_t sampleTimeMS, uint8_t factor) {
-     return getCurrent_Gnd(chnl, true,sampleTimeMS, factor);
+  uint32_t getCurrent_gnd(uint16_t chnl, uint16_t sampleTimeMS, uint8_t factor) {
+     return getCurrent_Gnd(chnl, sampleTimeMS, factor);
   }
   
   uint32_t getCurrent_0_1(uint16_t sampleTimeMS, uint8_t factor) {
