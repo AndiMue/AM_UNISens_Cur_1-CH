@@ -10,7 +10,6 @@
 // #define USE_OTA_BOOTLOADER
 
 #define LCD_ADDRESS 0x27
-#define OLED_ADDRESS 0x3C
 
 #define EI_NOTEXTERNAL
 #include <EnableInterrupt.h>
@@ -28,9 +27,7 @@
 #endif
 
 #include "Sensors/Ads1x15.h"
-//#include "Sensors/Ads1x15_AM.h"
 #define ADS1115_ADDR_1 0x4B
-//#define ADS1115_ADDR_2 0x4A	// auskommentiert
 #define ADS_SENSOR_GAIN adsGain_t::GAIN_TWO
 
 
@@ -199,12 +196,6 @@ public:
 
      lcd.setCursor(cs[0].current > 999 ? 0 : 1, 1);	// setze Cursor wenn Strom > 999 auf 0, sonst auf 1, 1  (Spalte, Zeile)
      lcd.print(cs[0].current / 100.0, 2);			// schreibe Strom geteilt durch 100; 1 Nachkommastelle (?)
-
-     //lcd.setCursor(cs[1].current > 999 ? 6 : 7, 1);
-     //lcd.print(cs[1].current / 100.0, 1);
-
-     //lcd.setCursor(cs[2].current > 999 ? 12 : 13, 1);
-     //lcd.print(cs[2].current / 100.0, 1);
     }
   }
 
@@ -230,7 +221,7 @@ public:
       lcd.print(ASKSIN_PLUS_PLUS_IDENTIFIER);			// vermutlich aus AskSinPP.h
       lcd.setCursor(3, 1);
       lcd.setContrast(200);
-      lcd.print((char*)serial);
+      lcd.print((char*)serial);							// Seriennummer des Sensors
 
       if (backlightOnTime > 0) backlightalarm.restartTimer(backlightOnTime);	// Leuchtzeit überschritten
 
@@ -305,9 +296,13 @@ class MeasureChannel : public Channel<Hal, DevList1, EmptyList, List4, PEERS_PER
           rmsg.init(device().nextcount(), number(), evcnt++, decisionValue, false , false);
           device().sendPeerEvent(rmsg, *this);
         }
+        #ifdef LCD_ADDRESS
         lcd.showCondition(sensor[sIdx].conditionType, sIdx);
+        #endif
       } else {
+        #ifdef LCD_ADDRESS
         lcd.showCondition(ct_disabled, sIdx);
+        #endif
       }
 
     }
@@ -360,10 +355,6 @@ public:
        void measure() {
          //measurement here:
          cs[0].current = ads1.getCurrent_0_1(dev.channel(1).sampleTime(), dev.channel(1).sctFactor());cs[0].ok = ads1.checkSensor();
-         //cs[0].current = ads1.getCurrent_gnd(ADS1X15_REG_CONFIG_MUX_SINGLE_0, dev.channel(1).sampleTime(), dev.channel(1).sctFactor());cs[0].ok = ads1.checkSensor(); // Messung gegen Gnd
-		     //cs[0].current = ads1.getCurrent_gnd(0, dev.channel(1).sampleTime(), dev.channel(1).sctFactor());cs[0].ok = ads1.checkSensor();	// Messung gegen Gnd
-         //cs[1].current = ads1.getCurrent_2_3(dev.channel(2).sampleTime(), dev.channel(2).sctFactor());cs[1].ok = ads1.checkSensor();
-         //cs[2].current = ads2.getCurrent_0_1(dev.channel(3).sampleTime(), dev.channel(3).sctFactor());cs[2].ok = ads2.checkSensor();
 
 #ifdef LCD_ADDRESS
          lcd.displayValues(cs);				// Stromwerte auf Display schreiben
@@ -382,8 +373,7 @@ public:
 
          // add measured current to the cumulated values
          cumulatedCurrentValues[0] += cs[0].current;				// Aufsummieren der Messwerte
-//         cumulatedCurrentValues[1] += cs[1].current;
-//         cumulatedCurrentValues[2] += cs[2].current;
+
 
          measureCount++;
          DPRINT("measure() #");DDEC(measureCount);DPRINT(" of ");DDECLN(dev.txInterval);
@@ -461,8 +451,9 @@ public:
 
     uint8_t bOn = this->getList0().backOnTime();
     //DPRINT(F("*LCD Backlight Ontime : ")); DDECLN(bOn);
+    #ifdef LCD_ADDRESS
     lcd.setBackLightOnTime(bOn);
-
+    #endif
     //bool cc = this->getList0().conditionCheckAverage();
     //DPRINT(F("*Condition Check on Average : ")); DDECLN(cc);
 
